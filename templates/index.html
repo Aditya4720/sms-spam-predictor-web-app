@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Spam Message Predictor</h1>
+        <form method="POST">
+            <select id="sampleMessages" onchange="fillMessageBox()">
+                <option value="">Select a sample message</option>
+                <optgroup label="Spam Messages">
+                    <option value="spam1">Win $1000 now! Click: bit.ly/freegift</option>
+                    <option value="spam2">Urgent: Your account is locked. Verify here: bank-secure.com</option>
+                    <option value="spam3">"Urgent! Your bank account is locked. Verify your identity immediately: secure-bank-update.com/confirm"</option>
+                    <option value="spam4">You won an iPhone! Claim prize: apple-giveaway.fake</option>
+                    <option value="spam5">Your package is delayed. Pay $2.50 to reship: dhl-scam.link</option>
+                </optgroup>
+                <optgroup label="Not Spam Messages">
+                    <option value="ham1">Hi Mom, I'll be home by 8pm for dinner</option>
+                    <option value="ham2">"Hi Dad, running 15 mins late for dinner. See you soon!"</option>
+                    <option value="ham3">Meeting reminder: 3pm today in Conference Room B</option>
+                    <option value="ham4">Doctor's appointment confirmed for Friday at 2pm</option>
+                    <option value="ham5">Team lunch tomorrow at 1pm at Cafe Coffee Day</option>
+                </optgroup>
+            </select>
+            
+            <textarea name="message" id="messageBox" rows="5" placeholder="type your message here..." required></textarea>
+            <button type="submit">Check</button>
+        </form>
+        
+        {% if prediction %}
+            <div class="result {% if prediction == 'Spam' %}spam{% else %}ham{% endif %}">
+                {% if prediction == 'Spam' %}
+                    ⚠️ SPAM ALERT!
+                {% else %}
+                    ✓ Safe Message (Not spam)
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function fillMessageBox() {
+            const dropdown = document.getElementById("sampleMessages");
+            const messageBox = document.getElementById("messageBox");
+            messageBox.value = dropdown.options[dropdown.selectedIndex].text;
+        }
+    </script>
+</body>
+</html>
